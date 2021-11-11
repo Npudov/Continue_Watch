@@ -42,6 +42,14 @@ class MainActivity2: AppCompatActivity() {
         super.onStop()
     }
 
+    override fun onDestroy() {
+        with(sharedPref.edit()) {
+            putInt(SECONDS, secondsElapsed)
+            apply()
+        }
+        super.onDestroy()
+    }
+
     companion object {
         const val SECONDS = "seconds"
     }
