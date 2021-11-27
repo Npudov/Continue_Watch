@@ -10,14 +10,17 @@ class MainActivity2: AppCompatActivity() {
     var secondsElapsed: Int = 0
     lateinit var textSecondsElapsed: TextView
     private lateinit var sharedPref: SharedPreferences
+    var isWork: Boolean = true
 
 
     var backgroundThread = Thread {
         while (true) {
-            Thread.sleep(1000)
-            textSecondsElapsed.post {
-                textSecondsElapsed.text = getString(R.string.seconds, secondsElapsed++)
+            if (isWork) {
+                textSecondsElapsed.post {
+                    textSecondsElapsed.text = getString(R.string.seconds, secondsElapsed++)
+                }
             }
+            Thread.sleep(1000)
         }
     }
 
@@ -30,11 +33,13 @@ class MainActivity2: AppCompatActivity() {
 
     }
     override fun onStart() {
+        isWork = true
         secondsElapsed = sharedPref.getInt(SECONDS, 0)
         super.onStart()
     }
 
     override fun onStop() {
+        isWork = false
         with(sharedPref.edit()) {
             putInt(SECONDS, secondsElapsed)
             apply()
@@ -43,6 +48,7 @@ class MainActivity2: AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        isWork = false
         with(sharedPref.edit()) {
             putInt(SECONDS, secondsElapsed)
             apply()

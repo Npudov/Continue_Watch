@@ -18,10 +18,10 @@ class MainActivity : AppCompatActivity() {
     var backgroundThread = Thread {
         while (true) {
             if (isSee) {
-                Thread.sleep(1000)
                 textSecondsElapsed.post {
                     textSecondsElapsed.text = getString(R.string.seconds, secondsElapsed++)
                 }
+                Thread.sleep(1000)
             }
         }
     }
